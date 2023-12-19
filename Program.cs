@@ -1,8 +1,14 @@
+using InventoryRepo.Models;
+using InventoryRepo.Repository;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddDbContext<InventoryDbContext>(options => options.UseSqlServer(
+   builder.Configuration.GetConnectionString("DB")));
+builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
