@@ -7,6 +7,38 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Upload\files\638385844632447112.png" />
+    <Content Remove="wwwroot\Upload\files\638385847397242891.png" />
+    <Content Remove="wwwroot\Upload\files\638385849722855880.png" />
+    <Content Remove="wwwroot\Upload\files\638385850876986690.png" />
+    <Content Remove="wwwroot\Upload\files\638385851555720929.png" />
+    <Content Remove="wwwroot\Upload\files\638385925976194459.png" />
+    <Content Remove="wwwroot\Upload\files\638385927825466000.png" />
+    <Content Remove="wwwroot\Upload\files\638385930443329673.png" />
+    <Content Remove="wwwroot\Upload\files\638385935346133875.png" />
+    <Content Remove="wwwroot\Upload\files\638385937444421113.png" />
+    <Content Remove="wwwroot\Upload\files\638385954090740567.jpg" />
+    <Content Remove="wwwroot\Upload\files\638385954776349149.jpg" />
+    <Content Remove="wwwroot\Upload\files\638385955233743424.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Upload\files\638385844632447112.png" />
+    <None Include="wwwroot\Upload\files\638385847397242891.png" />
+    <None Include="wwwroot\Upload\files\638385849722855880.png" />
+    <None Include="wwwroot\Upload\files\638385850876986690.png" />
+    <None Include="wwwroot\Upload\files\638385851555720929.png" />
+    <None Include="wwwroot\Upload\files\638385925976194459.png" />
+    <None Include="wwwroot\Upload\files\638385927825466000.png" />
+    <None Include="wwwroot\Upload\files\638385930443329673.png" />
+    <None Include="wwwroot\Upload\files\638385935346133875.png" />
+    <None Include="wwwroot\Upload\files\638385937444421113.png" />
+    <None Include="wwwroot\Upload\files\638385954090740567.jpg" />
+    <None Include="wwwroot\Upload\files\638385954776349149.jpg" />
+    <None Include="wwwroot\Upload\files\638385955233743424.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.14">
       <PrivateAssets>all</PrivateAssets>

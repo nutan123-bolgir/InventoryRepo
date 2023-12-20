@@ -104,11 +104,12 @@ public partial class InventoryDbContext : DbContext
 
             entity.ToTable("Product");
 
-            entity.Property(e => e.ProductId)
-                .ValueGeneratedNever()
-                .HasColumnName("ProductID");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.ProductImage)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.ProductName).HasMaxLength(255);
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
@@ -162,6 +163,9 @@ public partial class InventoryDbContext : DbContext
             entity.Property(e => e.ContactPerson).HasMaxLength(255);
             entity.Property(e => e.Email).HasMaxLength(255);
             entity.Property(e => e.SupplierName).HasMaxLength(255);
+            entity.Property(e => e.SupplierPhoto)
+                .HasMaxLength(255)
+                .IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);
