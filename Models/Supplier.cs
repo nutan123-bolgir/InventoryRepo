@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryRepo.Models;
 
@@ -15,9 +16,12 @@ public partial class Supplier
 
     public string? Email { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public string? SupplierPhoto { get; set; }
 
+    [NotMapped]
+
+    public IFormFile? file { get; set; }
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

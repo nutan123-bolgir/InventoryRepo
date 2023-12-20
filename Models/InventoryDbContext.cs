@@ -156,9 +156,7 @@ public partial class InventoryDbContext : DbContext
 
             entity.ToTable("Supplier");
 
-            entity.Property(e => e.SupplierId)
-                .ValueGeneratedNever()
-                .HasColumnName("SupplierID");
+            entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
             entity.Property(e => e.ContactNumber).HasMaxLength(20);
             entity.Property(e => e.ContactPerson).HasMaxLength(255);
             entity.Property(e => e.Email).HasMaxLength(255);
