@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryRepo.Models;
@@ -21,9 +22,7 @@ public partial class Product
     public string? ProductImage { get; set; }
 
     public virtual Category Category { get; set; }
-    
     [NotMapped]
-
     public IFormFile file { get; set; }
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();

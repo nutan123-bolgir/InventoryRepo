@@ -140,10 +140,11 @@ public partial class InventoryDbContext : DbContext
 
             entity.ToTable("Stock");
 
-            entity.Property(e => e.StockId)
-                .ValueGeneratedNever()
-                .HasColumnName("StockID");
+            entity.Property(e => e.StockId).HasColumnName("StockID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.ProductName)
+                .HasMaxLength(10)
+                .IsFixedLength();
 
             entity.HasOne(d => d.Product).WithMany(p => p.Stocks)
                 .HasForeignKey(d => d.ProductId)

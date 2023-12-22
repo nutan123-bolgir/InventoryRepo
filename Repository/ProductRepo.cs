@@ -1,4 +1,6 @@
 ﻿using InventoryRepo.Models;
+using Microsoft.CodeAnalysis;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryRepo.Repository
@@ -20,6 +22,12 @@ namespace InventoryRepo.Repository
 
             await _dbContext.Products.AddAsync(product);
             await _dbContext.SaveChangesAsync();
+
+            _dbContext.Database.ExecuteSqlRaw("EXEC UpdateStock @ProductID,@ProductName,@StockQuantity, @OperationType",
+                new SqlParameter("@ProductID", product.ProductId),
+                new SqlParameter("@StockQuantity", product.StockQuantity),
+                new SqlParameter("@ProductName", product.@ProductName),
+                new SqlParameter("@OperationType", "Insert"));
             return product;
 
         }
@@ -27,14 +35,21 @@ namespace InventoryRepo.Repository
         public async Task<Product?> DeleteAsync(int id)
         {
             var existingTag = await _dbContext.Products.FindAsync(id);
+            
 
             if (existingTag != null)
             {
                 _dbContext.Products.Remove(existingTag);
                 await _dbContext.SaveChangesAsync();
+
+                _dbContext.Database.ExecuteSqlRaw("EXEC UpdateStock @ProductID,@ProductName, @StockQuantity, @OperationType",
+          new SqlParameter("@ProductID", existingTag.ProductId),
+          new SqlParameter("@StockQuantity", existingTag.StockQuantity),
+          new SqlParameter("@ProductName", existingTag.ProductName),
+          new SqlParameter("@OperationType", "Delete"));
                 return existingTag;
             }
-
+          
             return null;
         }
 
@@ -61,13 +76,19 @@ namespace InventoryRepo.Repository
                 existingProduct.Price = product.Price;
                 existingProduct.CategoryId = product.CategoryId;
                 existingProduct.Category = product.Category;
-                
+                existingProduct.StockQuantity = product.StockQuantity;
 
                 await _dbContext.SaveChangesAsync();
+                _dbContext.Database.ExecuteSqlRaw("EXEC UpdateStock @ProductID, @ProductName, @StockQuantity, @OperationType",
+    new SqlParameter("@ProductID", product.ProductId),
+    new SqlParameter("@ProductName", product.ProductName), 
+    new SqlParameter("@StockQuantity", product.StockQuantity),
+    new SqlParameter("@OperationType", "Update"));
 
                 return existingProduct;
             }
-
+            
+        
             return null;
         }
 

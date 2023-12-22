@@ -19,9 +19,8 @@ public partial class Supplier
     public bool IsActive { get; set; }
 
     public string? SupplierPhoto { get; set; }
-
     [NotMapped]
-
     public IFormFile? file { get; set; }
+
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }
