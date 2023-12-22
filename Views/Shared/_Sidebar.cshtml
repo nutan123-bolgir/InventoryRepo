@@ -4,12 +4,13 @@
 @{
 }
 
-<div class="container">
+
     <div class="sidebar">
         <ul style ="padding-left: 0;">
             <li>
-                <a href="#">
-                    <div class="title"><img src="~/images/handcart.png" alt="InventoryRepo Logo" class="logo-image" width="50" height="50" /><b>Inventorio</b></div>
+                <a class="title">
+                    <img src="~/images/handcart.png" alt="InventoryRepo Logo" class="logo-image" width="50" height="50" />
+                    <b class="brand-name">Inventorio</b>
                 </a>
             </li>
             <li>
@@ -19,7 +20,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a asp-controller="Category" asp-action="Index">
                     <i class="fa-solid fa-layer-group"></i>
                     <div class="title">Categories</div>
                 </a>
@@ -68,4 +69,3 @@
             </li>
         </ul>
     </div>
-</div>

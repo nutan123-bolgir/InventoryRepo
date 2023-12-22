@@ -2,39 +2,49 @@
 
 @{
     ViewData["Title"] = "list";
+    Layout = "_Layout";
 }
 
-<h1>Category</h1>
+<div class="card mb-3">
+    <div class="card-header" style="background: linear-gradient(45deg, #47cebe, #ef4a82); font-family: 'PT Serif', serif, sans-serif;font-size: 20px;color: white;">
+        <i class="fa-solid fa-layer-group"></i>
+        <b>Categories</b>
+        <a href="../Category/Add" class="btn btn-info float-end" style="color: white;font-size: 20px;"><i class="fa fa-plus"></i> Add New</a>
 
-<p>
-    <a asp-action="Add" asp-controller="Category">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-action="Edit"  asp-controller="Category" asp-route-id="@item.CategoryId">Edit</a> |
-               
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="datatablesSimple">
+            <thead>
+                <tr>
+                    <th>CategoryName</th>
+                    <th>Description</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td> @Html.DisplayFor(modelItem => item.CategoryName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>
+                         <a asp-action="Edit" asp-controller="Category" asp-route-id="@item.CategoryId">
+                              <div class="edit-icon-container">
+                                  <i class="fa-solid fa-pen-to-square"></i>
+                              </div>
+                         </a>
+                         <a asp-action="Delete" asp-controller="Category" asp-route-id="@item.CategoryId">
+                               <div class="delete-icon-container">
+                                   <i class="fa-solid fa-trash"></i>
+                               </div>
+                         </a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
