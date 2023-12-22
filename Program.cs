@@ -6,8 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<InventoryDbContext>(options => options.UseSqlServer(
-   builder.Configuration.GetConnectionString("DB")));
+
+builder.Services.AddDbContext<InventoryDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("dbcs")));
+
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 var app = builder.Build();
 

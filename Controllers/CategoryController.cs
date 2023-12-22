@@ -28,6 +28,7 @@ namespace InventoryRepo.Controllers
             await categoryRepo.AddAsync(category);
             return RedirectToAction("Index");
         }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -35,6 +36,8 @@ namespace InventoryRepo.Controllers
             return View(categories);
 
         }
+
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -54,7 +57,6 @@ namespace InventoryRepo.Controllers
 
             return View(null);
         }
-
         [HttpPost]
         public async Task<IActionResult> Edit(Category category)
         {
@@ -73,24 +75,45 @@ namespace InventoryRepo.Controllers
             {
                 //not success message
             }
-            return RedirectToAction("Edit", new { id = category.CategoryId });
+            return RedirectToAction("Index", new { id = category.CategoryId });
 
         }
-        [HttpPost]
-        public async Task<IActionResult> Delete(Category category)
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
-            var DeleteTag = await categoryRepo.DeleteAsync(category.CategoryId);
-            if (DeleteTag != null)
+            var category = await categoryRepo.GetAsync(id);
+
+            if (category != null)
             {
-                // show success notification
+                return View(category);
+            }
+
+            return NotFound(); // Or handle as appropriate
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            var deletedCategory = await categoryRepo.DeleteAsync(id);
+
+            if (deletedCategory != null)
+            {
+                // Show success notification
+                TempData["SuccessMessage"] = "Category deleted successfully.";
             }
             else
             {
-                //show error notification
+                // Show error notification
+                TempData["ErrorMessage"] = "Error deleting the category.";
             }
-            return RedirectToAction("Edit", new { id = category.CategoryId });
 
+            return RedirectToAction("Index");
         }
+
 
 
     }
