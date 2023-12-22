@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Http; 
 
@@ -23,9 +24,7 @@ namespace InventoryRepo.Models
 
 
     public virtual Category Category { get; set; }
-    
     [NotMapped]
-
         public IFormFile file { get; set; }
 
               public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
