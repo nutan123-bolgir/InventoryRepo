@@ -33,13 +33,13 @@ public partial class InventoryDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=WJLP-1773\\SQLEXPRESS01;Database=InventoryDB;trusted_connection=true;Encrypt=False;");
+        => optionsBuilder.UseSqlServer("Server=WJLP-1783\\SQLEXPRESS;  Database=InventoryDB; trusted_connection=true; Encrypt=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Category__19093A2BF083BA6A");
+            entity.HasKey(e => e.CategoryId).HasName("PK__Category__19093A2BD140C9B1");
 
             entity.ToTable("Category");
 
@@ -49,7 +49,7 @@ public partial class InventoryDbContext : DbContext
 
         modelBuilder.Entity<LoginAndAccount>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Login an__1788CCACEE8A0FF6");
+            entity.HasKey(e => e.UserId).HasName("PK__Login an__1788CCACF7352DB1");
 
             entity.ToTable("Login and Account");
 
@@ -63,7 +63,7 @@ public partial class InventoryDbContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.OrderId).HasName("PK__Order__C3905BAF09211E16");
+            entity.HasKey(e => e.OrderId).HasName("PK__Order__C3905BAF7824214F");
 
             entity.ToTable("Order");
 
@@ -75,12 +75,12 @@ public partial class InventoryDbContext : DbContext
 
             entity.HasOne(d => d.Supplier).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.SupplierId)
-                .HasConstraintName("FK__Order__SupplierI__3D5E1FD2");
+                .HasConstraintName("FK__Order__SupplierI__5070F446");
         });
 
         modelBuilder.Entity<OrderDetail>(entity =>
         {
-            entity.HasKey(e => e.OrderDetailsId).HasName("PK__OrderDet__9DD74D9D994455D8");
+            entity.HasKey(e => e.OrderDetailsId).HasName("PK__OrderDet__9DD74D9D014762D7");
 
             entity.Property(e => e.OrderDetailsId)
                 .ValueGeneratedNever()
@@ -91,16 +91,16 @@ public partial class InventoryDbContext : DbContext
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
-                .HasConstraintName("FK__OrderDeta__Order__403A8C7D");
+                .HasConstraintName("FK__OrderDeta__Order__534D60F1");
 
             entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__OrderDeta__Produ__412EB0B6");
+                .HasConstraintName("FK__OrderDeta__Produ__5441852A");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.ProductId).HasName("PK__Product__B40CC6EDAA587792");
+            entity.HasKey(e => e.ProductId).HasName("PK__Product__B40CC6EDAA02A3F5");
 
             entity.ToTable("Product");
 
@@ -114,12 +114,12 @@ public partial class InventoryDbContext : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK__Product__Categor__38996AB5");
+                .HasConstraintName("FK__Product__Categor__4BAC3F29");
         });
 
         modelBuilder.Entity<PurchaseOrder>(entity =>
         {
-            entity.HasKey(e => e.PurchaseOrderId).HasName("PK__Purchase__036BAC448E500A8F");
+            entity.HasKey(e => e.PurchaseOrderId).HasName("PK__Purchase__036BAC44734FA12E");
 
             entity.ToTable("PurchaseOrder");
 
@@ -131,12 +131,12 @@ public partial class InventoryDbContext : DbContext
 
             entity.HasOne(d => d.Order).WithMany(p => p.PurchaseOrders)
                 .HasForeignKey(d => d.OrderId)
-                .HasConstraintName("FK__PurchaseO__Order__46E78A0C");
+                .HasConstraintName("FK__PurchaseO__Order__59FA5E80");
         });
 
         modelBuilder.Entity<Stock>(entity =>
         {
-            entity.HasKey(e => e.StockId).HasName("PK__Stock__2C83A9E290AB1D93");
+            entity.HasKey(e => e.StockId).HasName("PK__Stock__2C83A9E2FC857A89");
 
             entity.ToTable("Stock");
 
@@ -148,12 +148,12 @@ public partial class InventoryDbContext : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.Stocks)
                 .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__Stock__ProductID__440B1D61");
+                .HasConstraintName("FK__Stock__ProductID__571DF1D5");
         });
 
         modelBuilder.Entity<Supplier>(entity =>
         {
-            entity.HasKey(e => e.SupplierId).HasName("PK__Supplier__4BE6669418766BAE");
+            entity.HasKey(e => e.SupplierId).HasName("PK__Supplier__4BE66694B47C1F01");
 
             entity.ToTable("Supplier");
 

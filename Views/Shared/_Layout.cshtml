@@ -10,35 +10,48 @@
     <link rel="stylesheet" href="~/InventoryRepo.styles.css" asp-append-version="true" />
 </head>
 <body>
-    
-    <partial name="_Sidebar" />
-    <div class="main">
-        <div class="top-bar">
-            <div class="search">
-            <input type="text" name="search" placeholder="search here"/>
-            <label for="search"><i class="fas fa-search"></i></label>
-            </div>
-           
-            <div class="user">
-                <i class="fas fa-bell"></i>
-                <img src="~/images/user.jpg"/>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-   @*  <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - InventoryRepo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    @await Html.PartialAsync("_Sidebar")
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class="fa-solid fa-bars sidebarBtn"></i>
+                <span class="dashboard">Dashboard</span>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Search.." />
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="profile-details">
+                <img src="~/images/user.jpg" alt="" />
+                <span class="admin_name">User</span>
+                <i class="fa-solid fa-angle-down"></i>
+            </div>
+        </nav>
+        <div>
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
         </div>
-    </footer> *@
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+  
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
