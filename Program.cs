@@ -11,6 +11,7 @@ builder.Services.AddDbContext<InventoryDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("dbcs")));
 
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
+builder.Services.AddScoped<IProductRepo, ProductRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
