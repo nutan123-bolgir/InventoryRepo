@@ -20,7 +20,6 @@ public partial class Supplier
 
     public string? SupplierPhoto { get; set; }
     [NotMapped]
-    public IFormFile? file { get; set; }
-
+    public IFormFile file { get; set; }
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }
