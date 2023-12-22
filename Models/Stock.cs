@@ -11,5 +11,7 @@ public partial class Stock
 
     public int? QuantityInStock { get; set; }
 
+    public string? ProductName { get; set; }
+
     public virtual Product? Product { get; set; }
 }
