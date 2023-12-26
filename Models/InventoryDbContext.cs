@@ -164,6 +164,10 @@ public partial class InventoryDbContext : DbContext
             entity.Property(e => e.SupplierPhoto)
                 .HasMaxLength(255)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Suppliers)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_Supplier_Product");
         });
 
         OnModelCreatingPartial(modelBuilder);

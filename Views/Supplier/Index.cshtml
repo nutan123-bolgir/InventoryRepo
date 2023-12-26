@@ -12,7 +12,6 @@
         <a href="../Supplier/Add" class="btn btn-info float-end" style="color: white;font-size: 20px;"><i class="fa fa-plus"></i> Add New</a>
     </div>
 
-
 <div class="card-body">
     <div class="table-container">
         <table class="table table-bordered">
@@ -31,7 +30,7 @@
                     @Html.DisplayNameFor(model => model.Email)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.IsActive)
+                    @Html.DisplayNameFor(model => model.Product.ProductName)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.SupplierPhoto)
@@ -42,37 +41,37 @@
         <tbody>
     @foreach (var item in Model) {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SupplierName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ContactPerson)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ContactNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsActive)
-                </td>
-                    <td>
-                        <img src="~/Upload/files/@item.SupplierPhoto" alt="supplier photo" style="max-width: 100px; max-height: 100px;" />
-                    </td>
-                <td>
-                        <a asp-action="Edit" asp-controller="Product" asp-route-id="@item.SupplierId">
-                            <div class="edit-icon-container">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </div>
-                        </a>
-                        <a asp-action="Delete" asp-controller="Product" asp-route-id="@item.SupplierId">
-                            <div class="delete-icon-container">
-                                <i class="fa-solid fa-trash"></i>
-                            </div>
-                        </a>
+            <td>
+               @Html.DisplayFor(modelItem => item.SupplierName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactPerson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
+               <img src="~/Upload/files/@item.SupplierPhoto" alt="supplier photo" style="max-width: 100px; max-height: 100px;" />
+            </td>
+            <td>
+                 <a asp-action="Edit" asp-controller="Supplier" asp-route-id="@item.SupplierId">
+                     <div class="edit-icon-container">
+                          <i class="fa-solid fa-pen-to-square"></i>
+                     </div>
+                 </a>
+                 <a asp-action="Delete" asp-controller="Supplier" asp-route-id="@item.SupplierId">
+                     <div class="delete-icon-container">
+                          <i class="fa-solid fa-trash"></i>
+                     </div>
+                 </a>
                
-                </td>
+            </td>
             </tr>
     }
         </tbody>

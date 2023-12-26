@@ -17,6 +17,8 @@ namespace InventoryRepo.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
+            var products = await _productRepo.GetAllAsync();
+            ViewBag.Products = new SelectList(products, "ProductId", "ProductName");
             return View();
         }
         [HttpPost]
@@ -31,6 +33,7 @@ namespace InventoryRepo.Controllers
                 Email = supplier.Email,
                 IsActive = supplier.IsActive,
                 SupplierPhoto = supplier.SupplierPhoto,
+                ProductId = supplier.ProductId
 
             };
 
@@ -48,8 +51,9 @@ namespace InventoryRepo.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var supplier = await supplierRepo.GetAsync(id); 
-
+            var supplier = await supplierRepo.GetAsync(id);
+            var products = await _productRepo.GetAllAsync();
+            ViewBag.Products = new SelectList(products, "ProductId", "ProductName");
             if (supplier != null)
             {
                 var model = new Supplier
@@ -61,7 +65,8 @@ namespace InventoryRepo.Controllers
                     Email = supplier.Email,
                     IsActive = supplier.IsActive,
                     SupplierPhoto = supplier.SupplierPhoto,
-
+                    ProductId = supplier.ProductId
+                    
 
             };
 
@@ -77,7 +82,7 @@ namespace InventoryRepo.Controllers
         {
 
             var existingProduct = await supplierRepo.GetAsync(supplier.SupplierId);
-
+           
             if (existingProduct != null)
             {
 
@@ -87,6 +92,8 @@ namespace InventoryRepo.Controllers
                 existingProduct.ContactPerson = supplier.ContactPerson;
                 existingProduct.Email = supplier.Email;
                 existingProduct.IsActive = supplier.IsActive;
+                existingProduct.ProductId = supplier.ProductId;
+                existingProduct.Product = supplier.Product;
 
 
                 if (file != null && file.Length > 0)
