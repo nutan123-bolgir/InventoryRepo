@@ -2,12 +2,17 @@
 
 @{
     ViewData["Title"] = "Add";
+    Layout = "_Layout";
 }
 
-<h1>Add</h1>
 
-<h4>Product</h4>
-<hr />
+<div class="form-box">
+    <div class="card-header" style="background: linear-gradient(45deg, #47cebe, #ef4a82); font-family: 'PT Serif', serif, sans-serif;font-size: 20px;color: white;">
+        <i class="fa-solid fa-box-open"></i>
+        <b>Add Product</b>
+    </div>
+
+<div class="form-container">
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Add" enctype="multipart/form-data">
@@ -37,13 +42,6 @@
                 <span asp-validation-for="StockQuantity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <div class="form-check">
-                    <input asp-for="IsActive" class="form-check-input" />
-                    <label asp-for="IsActive" class="form-check-label">Is Active</label>
-                </div>
-                <span asp-validation-for="IsActive" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="file" class="control-label"></label>
                 <input asp-for="file" type="file"   class="form-control" />
                 <span asp-validation-for="ProductImage" class="text-danger"></span>
@@ -54,11 +52,8 @@
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
-
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

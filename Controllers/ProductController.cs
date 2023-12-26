@@ -17,6 +17,7 @@ namespace InventoryRepo.Controllers
             this.ProductRepo = productRepo;
             this.categoryRepo = categoryRepo;
         }
+        
         [HttpGet]
         public async Task< IActionResult> Add()
         {
@@ -44,6 +45,8 @@ namespace InventoryRepo.Controllers
             await ProductRepo.AddAsync(product,file);
             return RedirectToAction("Index");
         }
+
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -66,8 +69,8 @@ namespace InventoryRepo.Controllers
             return View(productViewModels);
 
         }
+        
         [HttpGet]
-
         public async Task<IActionResult> Edit(int id)
         {
             var product = await ProductRepo.GetAsync(id); ;
@@ -137,21 +140,51 @@ namespace InventoryRepo.Controllers
 
             return RedirectToAction("Index");
         }
-        [HttpPost]
-        public async Task<IActionResult> Delete(Product product)
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
-            var DeleteTag = await ProductRepo.DeleteAsync(product.ProductId);
-            if (DeleteTag != null)
+            var product = await ProductRepo.GetAsync(id);
+
+            if (product != null)
             {
-                // show success notification
+                var productViewModel = new ProductView
+                {
+                    ProductId = product.ProductId,
+                    ProductName = product.ProductName,
+                    Price = product.Price,
+                    StockQuantity = product.StockQuantity,
+                    IsActive = product.IsActive,
+                    CategoryName = product.Category?.CategoryName,
+                    ProductImage = product.ProductImage
+                };
+
+                return View(productViewModel);
+            }
+
+            return NotFound(); // Or handle as appropriate
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            var deletedProduct = await ProductRepo.DeleteAsync(id);
+
+            if (deletedProduct != null)
+            {
+                // Show success notification
+                TempData["SuccessMessage"] = "Product deleted successfully.";
             }
             else
             {
-                //show error notification
+                // Show error notification
+                TempData["ErrorMessage"] = "Error deleting the product.";
             }
-            return RedirectToAction("Edit", new { id = product.ProductId});
 
+            return RedirectToAction("Index");
         }
+
 
 
     }

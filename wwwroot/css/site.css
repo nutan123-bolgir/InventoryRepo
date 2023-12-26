@@ -291,3 +291,11 @@ nav .profile-details i {
     background-color: white; /* Background color */
 }
 
+.table-container {
+    max-height: 500px; /* Set the maximum height as needed */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the container height */
+}
+.form-container {
+    max-height: 500px; /* Set the maximum height as needed */
+    overflow-y: auto; /* Enable vertical scrolling if the content exceeds the container height */
+}

@@ -1,0 +1,82 @@
+﻿@model InventoryRepo.Models.ViewModel.ProductView
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "_Layout";
+}
+
+<div class="form-container">
+    <div class="form-box">
+        <div class="card-header" style="background: linear-gradient(45deg, #47cebe, #ef4a82); font-family: 'PT Serif', serif, sans-serif;font-size: 20px;color: white;">
+            <i class="fa-solid fa-layer-group"></i>
+            <b>Delete Product</b>
+        </div>
+        <dl class="row" style="margin-left: 20px;">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ProductName):
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ProductName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Price):
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StockQuantity):
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StockQuantity)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ProductImage):
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ProductImage)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CategoryName):
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CategoryName)
+            </dd>
+        </dl>
+
+
+
+        <div class="form-group text-center">
+           
+            <button type="button" class="btn btn-danger" style="width: 150px;" onclick="confirmDelete()">Delete</button> 
+        </div>
+
+        <form id="deleteForm" asp-action="DeleteConfirm" asp-controller="Product" asp-route-id="@Model.ProductId" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ProductId" />
+        </form>
+</div>
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        function confirmDelete() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action cannot be undone!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form when user confirms
+                    $("#deleteForm").submit();
+                }
+            });
+        }
+    </script>
+}
