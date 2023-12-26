@@ -40,7 +40,7 @@ namespace InventoryRepo.Repository
 
         public async Task<IEnumerable<Supplier>> GetAllAsync()
         {
-            return await _dbContext.Suppliers.ToListAsync();
+            return await _dbContext.Suppliers.Include(s => s.Product).ToListAsync();
 
         }
 

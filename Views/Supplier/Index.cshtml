@@ -28,6 +28,9 @@
                 @Html.DisplayNameFor(model => model.IsActive)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Product.ProductName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.SupplierPhoto)
             </th>
             <th></th>
@@ -51,6 +54,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.IsActive)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.ProductName)
+                </td>
                 <td>
                     <img src="~/Upload/files/@item.SupplierPhoto" alt="supplier photo" style="max-width: 100px; max-height: 100px;" />
                 </td>
