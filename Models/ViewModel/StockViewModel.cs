@@ -1,6 +1,6 @@
 ﻿using InventoryRepo.Models;
 
-namespace InventoryRepo.ViewModel
+namespace InventoryRepo.Models.ViewModel
 {
     public class StockViewModel
     {

@@ -1,5 +1,6 @@
 ﻿using InventoryRepo.Models;
 using InventoryRepo.Repository;
+using InventoryRepo.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -46,8 +47,23 @@ namespace InventoryRepo.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+
             var products = await ProductRepo.GetAllAsync();
-            return View(products);
+
+
+
+            var productViewModels = products.Select(p => new ProductView
+            {
+                ProductId = p.ProductId,
+                ProductName = p.ProductName,
+                Price = p.Price,
+                StockQuantity = p.StockQuantity,
+                IsActive = p.IsActive,
+                CategoryName = p.Category?.CategoryName, 
+                ProductImage = p.ProductImage
+            }).ToList();
+
+            return View(productViewModels);
 
         }
         [HttpGet]

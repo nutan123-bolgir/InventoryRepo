@@ -12,7 +12,8 @@ namespace InventoryRepo.Repository
         public ProductRepo(InventoryDbContext _dbContext)
         {
             this._dbContext = _dbContext;
-        }
+        
+      }
         public async Task<Product> AddAsync(Product product, IFormFile file)
         {
             if (file != null && file.Length > 0)
@@ -55,9 +56,9 @@ namespace InventoryRepo.Repository
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-           
-                return await _dbContext.Products.ToListAsync();
-            
+
+            return await _dbContext.Products.Include(p => p.Category).ToListAsync();
+
         }
 
         public async Task<Product?> GetAsync(int id)

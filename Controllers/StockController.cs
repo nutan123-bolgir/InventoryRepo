@@ -1,5 +1,5 @@
 ﻿using InventoryRepo.Models;
-using InventoryRepo.ViewModel;
+using InventoryRepo.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
