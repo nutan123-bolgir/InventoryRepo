@@ -2,14 +2,24 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "_Layout";
 }
 
-<h1>Edit</h1>
-
-<h4>Supplier</h4>
-<hr />
+<div class="form-box">
+    <div class="card-header" style="background: linear-gradient(45deg, #47cebe, #ef4a82); font-family: 'PT Serif', serif, sans-serif;font-size: 20px;color: white;">
+        <i class="fa-solid fa-box-open"></i>
+        <b>Edit Product</b>
+    </div>
+<div class="form-container">
 <div class="row">
     <div class="col-md-4">
+                
+        @if (TempData["EditSuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["EditSuccessMessage"]
+            </div>
+        }
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="SupplierId" />
@@ -37,55 +47,60 @@
                 <label asp-for="ProductId" class="control-label"></label>
                 @Html.DropDownListFor(model => model.ProductId, (IEnumerable<SelectListItem>)ViewBag.Products, "Select Product", new { @class = "form-control" })
             </div>
+               <div class="form-group">
+                            <label asp-for="file" class="control-label">
+                                @if (!string.IsNullOrEmpty(Model.SupplierPhoto))
+                                {
+                                    <span>
+                                        <img src="~/Upload/files/@Model.SupplierPhoto" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                                        <br />
+                                        Current File: @Model.SupplierPhoto
+                                        <input type="hidden" asp-for="SupplierPhoto" />
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>Choose File</span>
+                                }
+                            </label>
 
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="file" class="control-label">
-                    @if (!string.IsNullOrEmpty(Model.SupplierPhoto))
-                    {
-                        <span>Current File: @Model.SupplierPhoto</span>
-                    }
-                    else
-                    {
-                        <span>Choose File</span>
-                    }
-                </label>
+                            <input asp-for="file" type="file" class="form-control"/>
 
-                @if (!string.IsNullOrEmpty(Model.SupplierPhoto))
-                {
-                    <img src="~/Upload/files/@Model.SupplierPhoto" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
-                    <br />
-                    <span>Current File: @Model.SupplierPhoto</span>
-                    <input type="hidden" asp-for="SupplierPhoto" />
-                    <br />
-                }
-
-                <input asp-for="file" type="file" class="form-control" />
-
-                <span asp-validation-for="SupplierPhoto" class="text-danger"></span>
-            </div>
+                            <span asp-validation-for="SupplierPhoto" class="text-danger"></span>
+               </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <button class="btn btn-danger ms-2" type="submit"
-                        asp-area=""
-                        asp-controller="Supplier"
-                        asp-action="Delete">
-                    Delete
-                </button>
+                <button type="button" class="btn btn-primary" style="background-color:rgba(227, 9, 143); color: #fff; border-color: rgba(227, 9, 143);" onclick="confirmEdit()">Save</button>
             </div>
         </form>
+        </div>
+    </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        function confirmEdit() {
+            Swal.fire({
+                title: 'Are you sure you want to save the changes?',
+                text: 'This action cannot be undone!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Disable the button to prevent multiple submissions
+                    $("#editForm button").prop("disabled", true);
+
+                    // Submit the form when user confirms
+                    $("#editForm").submit();
+                }
+            });
+        }
+    </script>
 }

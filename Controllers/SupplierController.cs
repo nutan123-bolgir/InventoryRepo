@@ -66,9 +66,9 @@ namespace InventoryRepo.Controllers
                     IsActive = supplier.IsActive,
                     SupplierPhoto = supplier.SupplierPhoto,
                     ProductId = supplier.ProductId
-                    
 
-            };
+
+                };
 
                 return View(model);
             }
@@ -122,21 +122,40 @@ namespace InventoryRepo.Controllers
 
             return RedirectToAction("Index");
         }
-        [HttpPost]
-        public async Task<IActionResult> Delete(Supplier supplier)
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
-            var DeleteTag = await supplierRepo.DeleteAsync(supplier.SupplierId);
-            if (DeleteTag != null)
+            var supplier = await supplierRepo.GetAsync(id);
+
+            if (supplier != null)
             {
-                // show success notification
+                return View(supplier);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            var deletedSupplier = await supplierRepo.DeleteAsync(id);
+
+            if (deletedSupplier != null)
+            {
+                // Show success notification
+                TempData["SuccessMessage"] = "Supplier deleted successfully.";
             }
             else
             {
-                //show error notification
+                // Show error notification
+                TempData["ErrorMessage"] = "Error deleting the supplier.";
             }
-            return RedirectToAction("Edit", new { id = supplier.SupplierId });
 
+            return RedirectToAction("Index", new { id });
         }
+
 
 
     }

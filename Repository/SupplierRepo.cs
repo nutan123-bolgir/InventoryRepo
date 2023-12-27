@@ -26,7 +26,7 @@ namespace InventoryRepo.Repository
 
         public async Task<Supplier?> DeleteAsync(int id)
         {
-            var existingTag = await _dbContext.Suppliers.FindAsync(id);
+            var existingTag = await _dbContext.Suppliers.Include(p => p.Product).FirstOrDefaultAsync(p => p.SupplierId == id);
 
             if (existingTag != null)
             {
@@ -46,7 +46,7 @@ namespace InventoryRepo.Repository
 
         public async Task<Supplier?> GetAsync(int id)
         {
-            return await _dbContext.Suppliers.FindAsync(id);
+            return await _dbContext.Suppliers.Include(p => p.Product).FirstOrDefaultAsync(p => p.SupplierId == id);
         }
 
         public async Task<Supplier?> UpdateAsync(Supplier supplier)
