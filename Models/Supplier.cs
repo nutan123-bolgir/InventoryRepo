@@ -16,15 +16,18 @@ public partial class Supplier
 
     public string? Email { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
 
     public string? SupplierPhoto { get; set; }
 
     public int? ProductId { get; set; }
-
+    
     [NotMapped]
     public IFormFile? file { get; set; }
+
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual Product? Product { get; set; }
+
+    public virtual ICollection<SupplierOrder> SupplierOrders { get; set; } = new List<SupplierOrder>();
 }

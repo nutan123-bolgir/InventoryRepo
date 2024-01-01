@@ -20,13 +20,15 @@ public partial class Product
 
     public string? ProductImage { get; set; }
 
+    [NotMapped]
+    public IFormFile? file { get; set; } 
     public virtual Category Category { get; set; }
 
-    [NotMapped]
-    public IFormFile? file { get; set; }
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
     public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
+
+    public virtual ICollection<SupplierOrder> SupplierOrders { get; set; } = new List<SupplierOrder>();
 
     public virtual ICollection<Supplier> Suppliers { get; set; } = new List<Supplier>();
 }

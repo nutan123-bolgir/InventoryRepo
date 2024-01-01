@@ -31,10 +31,12 @@ public partial class InventoryDbContext : DbContext
 
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=WJLP-1783\\SQLEXPRESS;Database=InventoryDB;trusted_connection=true;Encrypt=False;");
+    public virtual DbSet<SupplierOrder> SupplierOrders { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
@@ -173,6 +175,28 @@ public partial class InventoryDbContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.Suppliers)
                 .HasForeignKey(d => d.ProductId)
                 .HasConstraintName("FK_Supplier_Product");
+        });
+
+        modelBuilder.Entity<SupplierOrder>(entity =>
+        {
+            entity.HasKey(e => e.SupplierOrderId).HasName("PK__Supplier__8EDF77E90CC6400F");
+
+            entity.ToTable("SupplierOrder");
+
+            entity.Property(e => e.SupplierOrderId).ValueGeneratedNever();
+            entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            entity.Property(e => e.TotalPrice).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.UnitPrice).HasColumnType("decimal(10, 2)");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.SupplierOrders)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SupplierOrder_Product");
+
+            entity.HasOne(d => d.Supplier).WithMany(p => p.SupplierOrders)
+                .HasForeignKey(d => d.SupplierId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SupplierOrder_Supplier");
         });
 
         OnModelCreatingPartial(modelBuilder);

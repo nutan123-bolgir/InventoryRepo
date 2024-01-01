@@ -20,7 +20,7 @@
                 @TempData["EditSuccessMessage"]
             </div>
         }
-        <form asp-action="Edit">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data" id="editForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="SupplierId" />
             <div class="form-group">
@@ -77,7 +77,7 @@
     </div>
     </div>
 </div>
-</div>
+
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
