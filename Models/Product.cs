@@ -19,14 +19,13 @@ public partial class Product
     public bool IsActive { get; set; }
 
     public string? ProductImage { get; set; }
-
-    public virtual Category Category { get; set; }
-
     [NotMapped]
     public IFormFile? file { get; set; }
-    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+    public decimal? Gstrate { get; set; }
 
-    public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
+    public string? Code { get; set; }
+
+    public virtual Category Category { get; set; }
 
     public virtual ICollection<Supplier> Suppliers { get; set; } = new List<Supplier>();
 }

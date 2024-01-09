@@ -19,12 +19,15 @@ public partial class Supplier
     public bool IsActive { get; set; }
 
     public string? SupplierPhoto { get; set; }
-
-    public int? ProductId { get; set; }
-
     [NotMapped]
     public IFormFile? file { get; set; }
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    public int? ProductId { get; set; }
+
+    public int? CategoryId { get; set; }
+
+    public virtual Category? Category { get; set; }
 
     public virtual Product? Product { get; set; }
+
+    public virtual ICollection<Supplierorder> Supplierorders { get; set; } = new List<Supplierorder>();
 }

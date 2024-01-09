@@ -100,7 +100,7 @@ namespace InventoryRepo.Repository
             {
                 var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
                 FileName = DateTime.Now.Ticks.ToString() + extension;
-                var rootPath = "C:\\Users\\Neha.porje\\Source\\Repos\\nutan123-bolgir\\InventoryRepoo\\wwwroot\\";
+                var rootPath = "C:\\Users\\Nutan.Bolgir\\Desktop\\Inventory\\InventoryRepo\\wwwroot\\";
                 var relativePath = "Upload/files";
                 var filepath = Path.Combine(rootPath, relativePath);
                 if (!Directory.Exists(filepath))

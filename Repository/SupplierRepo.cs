@@ -51,7 +51,7 @@ namespace InventoryRepo.Repository
 
         public async Task<Supplier?> UpdateAsync(Supplier supplier)
         {
-            var existingProduct = await _dbContext.Suppliers.FindAsync(supplier.SupplierId);
+            var existingProduct = await _dbContext.Suppliers.Include(p => p.Product).FirstOrDefaultAsync(p => p.SupplierId == supplier.SupplierId);
 
             if (existingProduct != null)
             {
@@ -61,6 +61,7 @@ namespace InventoryRepo.Repository
                 existingProduct.ContactPerson=supplier.ContactPerson;
                 existingProduct.Email=supplier.Email;
                 existingProduct.IsActive=supplier.IsActive;
+                existingProduct.ProductId=supplier.ProductId;
 
 
 

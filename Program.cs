@@ -1,18 +1,23 @@
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using InventoryRepo.Models;
 using InventoryRepo.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddDbContext<InventoryDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("dbcs")));
-
+ options.UseSqlServer(builder.Configuration.GetConnectionString("dbcs")));
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<ISupplierRepo, SupplierRepo>();
+builder.Services.AddScoped<ISupplierOrderRepo, SupplierOrderRepo>();
+builder.Services.AddScoped<PdfService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -66,6 +66,7 @@ namespace InventoryRepo.Controllers
                     IsActive = supplier.IsActive,
                     SupplierPhoto = supplier.SupplierPhoto,
                     ProductId = supplier.ProductId
+                    
 
 
                 };
@@ -93,7 +94,7 @@ namespace InventoryRepo.Controllers
                 existingProduct.Email = supplier.Email;
                 existingProduct.IsActive = supplier.IsActive;
                 existingProduct.ProductId = supplier.ProductId;
-                existingProduct.Product = supplier.Product;
+                
 
 
                 if (file != null && file.Length > 0)
