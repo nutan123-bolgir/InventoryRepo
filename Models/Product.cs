@@ -29,7 +29,7 @@ public partial class Product
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
-    public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
+    public virtual Category Category { get; set; }
 
     public virtual ICollection<SupplierOrder> SupplierOrders { get; set; } = new List<SupplierOrder>();
 

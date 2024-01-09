@@ -1,0 +1,209 @@
+﻿@model InventoryRepo.Models.ViewModel.BillViewModel
+@{
+    ViewData["Title"] = "Add";
+
+}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<form asp-action="Add" method="post">
+    <!-- Supplier Details -->
+    <div class="form-group">
+        <label asp-for="supplierId" class="control-label"></label>
+        @Html.DropDownListFor(model => model.supplierId, ViewBag.supplier as SelectList, "Select Supplier", new { @class = "form-control" })
+
+    </div>
+
+    <div class="form-group">
+        <label asp-for="supplierName" class="control-label"></label>
+          @Html.DropDownListFor(model => model.supplierId, ViewBag.supplierName as SelectList, "Select Supplier", new { @class = "form-control" })
+    </div>
+
+
+   
+    <label>Items:</label>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>GST</th>
+                <th>Total</th>
+                
+              
+            </tr>
+        </thead>
+        <tbody id="itemsTableBody">
+            @for (int i = 1; i < Model.Items.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.DropDownListFor(model => model.Items[i].ProductId, ViewBag.productList as SelectList, "Select Product", new { @class = "form-control" })
+                    </td>
+                    <td>
+                        <input asp-for="Items[i].Quantity" class="form-control" />
+                    </td>
+                    <td>
+                        <input asp-for="Items[i].Price" class="form-control" />
+                    </td>
+                    <td>
+                        <input asp-for="Items[i].TotalPrice" class="form-control" />
+                    </td>
+                    <td>
+                        <input asp-for="Items[i].Gstrate" class="form-control" />
+                    </td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+    @for (int i = 0; i < Model.Items.Count; i++)
+    {
+        <input type="hidden" asp-for="Items[i].ProductId" />
+        <input type="hidden" asp-for="Items[i].Quantity" />
+        <input type="hidden" asp-for="Items[i].Price" />
+        <input type="hidden" asp-for="Items[i].TotalPrice" />
+    }
+
+    
+    <button type="button" id="addItemBtn" class="btn btn-primary">Add Item</button>
+
+   
+    <div class="form-group">
+        <label asp-for="Grandtaotal">Grand Total:</label>
+        <input asp-for="Grandtaotal" class="form-control" />
+    </div>
+
+    <button type="button" id="generateInvoicePDFBtn" class="btn btn-success">Generate PDF Invoice</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    
+    
+</form>
+@section Scripts {
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).on("input", "input[name^='Items[']:not([readonly])", function () {
+            updateProductDetails($(this));
+            updateTotal($(this));
+            updateGrandTotal();
+        });
+
+        $(document).on("click", ".deleteItemBtn", function () {
+            $(this).closest("tr").remove();
+            updateGrandTotal();
+        });
+
+        function updateTotal(inputElement) {
+            var index = inputElement.attr("name").match(/\d+/)[0];
+            var quantity = $("input[name='Items[" + index + "].Quantity']").val();
+            var price = $("input[name='Items[" + index + "].Price']").val();
+            var gstRate = $("input[name='Items[" + index + "].Gstrate']").val();
+            var totalExcludingGST = quantity * price;
+            var gstAmount = (totalExcludingGST * gstRate) / 100;
+            var totalIncludingGST = totalExcludingGST + gstAmount;
+
+            $("input[name='Items[" + index + "].TotalPrice']").val(totalIncludingGST.toFixed(2));
+
+            // Also update product details when the product ID changes
+            
+        }
+
+        function updateGrandTotal() {
+            var grandTotal = 0;
+            $("input[name^='Items['][name$='].TotalPrice']").each(function () {
+                grandTotal += parseFloat($(this).val()) || 0;
+            });
+
+            $("input[name='Grandtaotal']").val(grandTotal.toFixed(2));
+        }
+
+        function updateProductDetails(selectElement) {
+            var name = selectElement.attr("name");
+            var index = name.substring(name.indexOf("[") + 1, name.indexOf("]"));
+            var productId = selectElement.val();
+
+            // Use AJAX to fetch product details from the server
+            $.ajax({
+                url: '/SupplierOrder/GetProductDetails', // Update the URL to the actual endpoint in your controller
+                type: 'GET',
+                data: { productId: productId },
+                success: function (productDetails) {
+                    console.log('Product details:', productDetails);
+
+                    // Assuming you have elements with specific IDs for Price and GST in the table
+                    var priceElement = $("#priceCell_" + index);
+                    var gstElement = $("#gstCell_" + index);
+
+                    // Update HTML elements with received data
+                    priceElement.text('Price: ' + productDetails.price);
+                    gstElement.text('GST: ' + productDetails.gst);
+
+                    // Assuming you want to update corresponding input fields as well
+                    $("input[name='Items[" + index + "].Price']").val(productDetails.price);
+                    $("input[name='Items[" + index + "].Gstrate']").val(productDetails.gst);
+
+                    // Trigger input event to update total when price and gst are changed
+                    $("input[name^='Items[" + index + "']:not([readonly])").trigger('input');
+                },
+                error: function (error) {
+                    console.log('Error fetching product details: ', error);
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+            var index = 0;
+
+            function handleDropdownChange() {
+                updateProductDetails($(this));
+            }
+
+            // Event delegation for dynamically added elements using the 'change' event
+            $("#itemsTableBody").on("change", "select[name^='Items[']", handleDropdownChange);
+
+            $("#addItemBtn").click(function () {
+                var dropdownName = "Items[" + index + "].ProductId";
+                var dropdownHtml = '<select name="' + dropdownName + '" class="form-control">';
+                dropdownHtml += '<option value="" disabled>Select Product</option>';
+
+        @foreach (var product in ViewBag.productList)
+        {
+            <text>dropdownHtml += '<option value="@product.Value">@product.Text</option>'; </text>
+        }
+
+                    dropdownHtml += '</select>';
+
+                var newRow = '<tr>' +
+                    '<td>' + dropdownHtml + '</td>' +
+                    '<td><input name="Items[' + index + '].Quantity" class="form-control" /></td>' +
+                    '<td><input name="Items[' + index + '].Price" class="form-control"  /></td>' +
+                    '<td><input name="Items[' + index + '].Gstrate" class="form-control"  /></td>' +
+                    '<td><input name="Items[' + index + '].TotalPrice" class="form-control"  /></td>' +
+                    '<td><button type="button" class="btn btn-danger deleteItemBtn">Delete</button></td>' +
+                    '</tr>';
+
+                var newRowElem = $(newRow);
+                $("#itemsTableBody").append(newRowElem);
+
+                // Attach the change event handler to the new dropdown
+                var newDropdown = newRowElem.find("select[name='" + dropdownName + "']");
+                newDropdown.on("change", handleDropdownChange);
+
+                // Manually call updateProductDetails for the new dropdown
+                updateProductDetails(newDropdown);
+
+                index++;
+            });
+        });
+
+
+        
+        
+
+
+    </script>
+}
+
+
+
