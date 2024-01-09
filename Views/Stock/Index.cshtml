@@ -2,42 +2,50 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "_Layout";
 }
 
-<h1>Index</h1>
+<div class="card mb-3">
+    <div class="card-header" style="background: linear-gradient(45deg, #47cebe, #ef4a82); font-family: 'PT Serif', serif, sans-serif;font-size: 20px;color: white;">
+        <i class="fa-solid fa-people-carry-box"></i>
+        <b>Stock</b>
+        <a href="../Stock/Add" class="btn btn-info float-end" style="color: white;font-size: 20px;"><i class="fa fa-plus"></i> Add New</a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.QuantityInStock)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
+<div class="card-body">
+        <div class="table-container">
+         <table class ="table table-bordered>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.QuantityInStock)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductName)
+                    </th>
            
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuantityInStock)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductId)
-            </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuantityInStock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductId)
+                    </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductName)
+                        </td>
           
-        </tr>
-}
-    </tbody>
-</table>
+                </tr>
+        }
+            </tbody>
+        </table>
+        </div>
+</div>
+</div>

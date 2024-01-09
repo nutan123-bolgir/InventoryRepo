@@ -13,6 +13,9 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("dbcs")));
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<ISupplierRepo, SupplierRepo>();
+builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
+builder.Services.AddScoped<ICustomerOrderRepo, CustomerOrderRepo>();
+builder.Services.AddScoped<IItemRepo, ItemRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

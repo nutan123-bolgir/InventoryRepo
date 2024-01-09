@@ -1,0 +1,238 @@
+﻿@model InventoryRepo.Models.ViewModel.CustomerBillViewModel
+
+@{
+    ViewBag.Title = "Add";
+}
+<form asp-action="Add" method="post">
+<div class="row">
+    <div class="col-sm-8">
+        <div style="display: inline-block;">
+            <div class="form-group">
+                <label for="customerNameDropdown">Select Customer:</label>
+                <select id="customerNameDropdown" class="form-control">
+                    @foreach (var customer in ViewBag.Customers)
+                    {
+                        <option value="@customer.Value">@customer.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group" style="display: inline-block;">
+                <label asp-for="CustomerId" class="control-label">Customer ID:</label>
+                <input asp-for="CustomerId" id="CustomerId" class="form-control" readonly />
+            </div>
+        </div>
+
+        @using (Html.BeginForm("Add", "CustomerOrder", FormMethod.Post, new { id = "popupForm" }))
+        {
+
+            <table class="table table-bordered">
+                <caption> Add Products </caption>
+                <tr>
+                    <th>ProductId</th>
+                    <th>Product Name</th>
+                    <th>Unit Price</th>
+                    <th>Qty</th>
+                    <th>GST Rate</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <input type="text" class="form-control" placeholder="ProductId" id="ProductId" name="ProductId" size="25px" required>
+                    </td>
+                    <td>
+                        <select class="form-control" id="productDropdown" name="productDropdown">
+                            <option value="">Select a product</option>
+                            @foreach (var product in ViewBag.Products)
+                            {
+                                <option value="@product.ProductId" data-unit_price="@product.UnitPrice" data-GstRate="@product.GSTRate">@product.ProductName</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control unit_price" id="unit_price" size="25px" name="unit_price" placeholder="Unit Price" disabled>
+                    </td>
+                    <td>
+                        <input type="number" class="form-control pro_qty" id="qty" name="qty" placeholder="qty" min="1" value="1" size="10px" >
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="GST Rate" size="35px" id="GstRate" name="GstRate" disabled>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="total_cost" size="35px" id="total_cost" name="total_cost" disabled>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" type="button" id="addItemBtn">Add</button>
+                    </td>
+                </tr>
+            </table>
+        }
+
+        <table class="table table-bordered" id="product_list">
+            <caption> Products</caption>
+            <thead>
+                <tr>
+
+                    <th>Product Name</th>
+                    <th>Qty</th>
+                    <th>Unit Price</th>
+                    <th>GST Rate</th>
+                    <th>GST Amount</th>
+                    <th>Total Amount (GST+SP)</th>
+                    <th style="width: 40px">Remove</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="col-sm-4">
+        <div class="col s12 m6 offset-m4">
+                <div class="form-group" align="left">
+                    <label class="form-label">GrandTotal</label>
+                    <input type="text" asp-for="GrandTotal" class="form-control" placeholder="GrandTotal" id="total" name="GrandTotal" size="30px" required disabled>
+
+                    <!-- Add a hidden input field for GrandTotal -->
+                    <input type="hidden" asp-for="GrandTotal" name="GrandTotal" />
+                </div>
+                <div id="hiddenInputsContainer"></div>
+            <div class="card" align="right">
+                <button type="button" id="save" class="btn btn-info" onclick="addProject()">Print Invoice</button>
+                <button type="submit" asp-for="Add" asp-controller="CustomerOrder" class="btn btn-primary">Submit</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+    </form>
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+    <script>
+        getProductId();
+
+        function getProductId() {
+            $("#ProductId").keyup(function (e) {
+                // your existing code for handling product code input
+            });
+        }
+
+        $(function () {
+            $("#unit_price, #qty").on("keydown keyup click", function () {
+                var sum = Number($("#unit_price").val()) * Number($("#qty").val());
+                $('#total_cost').val(sum);
+            });
+        });
+
+        function addproduct() {
+            // your existing code for adding a product to the list
+        }
+
+        function addRow(product) {
+            // your existing code for adding a row to the product list
+        }
+
+        function addProject() {
+            // your existing code for processing and posting the product list
+        }
+
+        function deleteRow(row) {
+            // your existing code for deleting a row from the product list
+        }
+        var index = 0;
+        // New script for updating ProductId, UnitPrice, and GstRate
+        $(document).ready(function () {
+            
+            // Handle customer dropdown change event
+            $('#customerNameDropdown').change(function () {
+                // Display the selected customer ID
+                var selectedCustomerId = $(this).val();
+                $('#CustomerId').val(selectedCustomerId);
+            });
+
+            // Handle product dropdown change event
+            $(document).ready(function () {
+                // Handle product dropdown change event
+                $('#productDropdown').change(function () {
+                    var selectedProductId = $(this).val();
+                    $('#ProductId').val(selectedProductId);
+
+                    // Get product details from the selected option
+                    var selectedOption = $("#productDropdown option:selected");
+                    var unitPrice = parseFloat(selectedOption.data('unit_price'));
+                    var gstRate = parseFloat(selectedOption.data('gstrate'));
+
+                    // Display the product details1
+                    $('#unit_price').val(unitPrice.toFixed(2));
+                    $('#GstRate').val(gstRate.toFixed(2));
+                });
+            });
+
+            // Handle "Add to Order" button click event
+            $("#addItemBtn").on("click", function () {
+                
+                var productName = $("#productDropdown option:selected").text();
+                var quantity = parseInt($("#qty").val()) || 1; // Get the quantity from user input or set a default
+                var unitPrice = parseFloat($("#unit_price").val());
+                var gstRate = parseFloat($("#GstRate").val());
+
+                var gstAmount = (unitPrice * gstRate * quantity) / 100;
+                var total = (unitPrice * quantity) + gstAmount;
+
+                var newRow = '<tr>' +
+                    '<td>' + productName + '</td>' +
+                    '<td>' + quantity + '</td>' +
+                    '<td>' + unitPrice.toFixed(2) + '</td>' +
+                    '<td>' + gstRate + '</td>' +
+                    '<td>' + gstAmount.toFixed(2) + '</td>' + // Display GST amount
+                    '<td>' + total.toFixed(2) + '</td>' +
+                    '<td><button type="button" class="deleteBtn">Delete</button></td>' +
+                    '</tr>';
+
+                $("#product_list tbody").append(newRow);
+                
+                // Append hidden input fields for each added product
+                var hiddenInputs = '<input type="hidden" name="Items[' + index + '].ProductName" value="' + productName + '" />' +
+                    '<input type="hidden" name="Items[' + index + '].Quantity" value="' + quantity + '" />' +
+                    '<input type="hidden" name="Items[' + index + '].UnitPrice" value="' + unitPrice.toFixed(2) + '" />' +
+                    '<input type="hidden" name="Items[' + index + '].GSTRate" value="' + gstRate + '" />' +
+                    '<input type="hidden" name="Items[' + index + '].Total" value="' + total.toFixed(2) + '" />';
+
+                $("#hiddenInputsContainer").append(hiddenInputs);
+                index++;
+                // Clear the product dropdown selection and quantity input
+                $("#productDropdown").val('');
+                $("#qty").val('');
+                $("#unit_price").val('');
+                $("#GstRate").val('');
+                $("#total_cost").val('');
+                // Update the grand total
+                updateGrandTotal();
+                // Update the grand total or any other calculations if needed
+                function updateGrandTotal() {
+                    var grandTotal = 0;
+
+                    // Iterate through rows in the product_list table
+                    $("#product_list tbody tr").each(function () {
+                        grandTotal += parseFloat($(this).find('td:eq(5)').text()) || 0;
+                    });
+
+                    // Update the GrandTotal input field
+                    $("input[name='GrandTotal']").val(grandTotal.toFixed(2));
+                }
+
+                // Attach click event to the delete button in the new row
+                $(".deleteBtn").on("click", function () {
+                    $(this).closest("tr").remove();
+                    // Update the grand total or any other calculations if needed
+                });
+            });
+        });
+
+    </script>
+}
+
+@section styles{
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+}

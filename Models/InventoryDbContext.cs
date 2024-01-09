@@ -17,11 +17,19 @@ public partial class InventoryDbContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<Customer> Customers { get; set; }
+
+    public virtual DbSet<CustomerOrder> CustomerOrders { get; set; }
+
+    public virtual DbSet<Item> Items { get; set; }
+
     public virtual DbSet<LoginAndAccount> LoginAndAccounts { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+
+    public virtual DbSet<OrderedProduct> OrderedProducts { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -47,6 +55,39 @@ public partial class InventoryDbContext : DbContext
 
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.CategoryName).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.HasKey(e => e.CustomerId).HasName("PK__Customer__A4AE64D8070DAF4C");
+
+            entity.ToTable("Customer");
+
+            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.LastName).HasMaxLength(50);
+            entity.Property(e => e.PhoneNumber).HasMaxLength(15);
+        });
+
+        modelBuilder.Entity<CustomerOrder>(entity =>
+        {
+            entity.HasKey(e => e.CustomerOrderId).HasName("PK__Customer__28FBA0BCA8EB5666");
+
+            entity.ToTable("CustomerOrder");
+
+            entity.Property(e => e.GrandTotal).HasColumnType("decimal(10, 5)");
+            entity.Property(e => e.PaymentType).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Item>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Item__3214EC0703E815C0");
+
+            entity.ToTable("Item");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Name).HasMaxLength(255);
+            entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
         });
 
         modelBuilder.Entity<LoginAndAccount>(entity =>
@@ -100,6 +141,23 @@ public partial class InventoryDbContext : DbContext
                 .HasConstraintName("FK__OrderDeta__Produ__5441852A");
         });
 
+        modelBuilder.Entity<OrderedProduct>(entity =>
+        {
+            entity.HasKey(e => e.OrderedProductId).HasName("PK__OrderedP__C20DEB1ADEA8E07F");
+
+            entity.ToTable("OrderedProduct");
+
+            entity.Property(e => e.GrandTotal).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.GstRate).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.ProductName).HasMaxLength(255);
+            entity.Property(e => e.Total).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.UnitPrice).HasColumnType("decimal(10, 2)");
+
+            entity.HasOne(d => d.CustomerOrder).WithMany(p => p.OrderedProducts)
+                .HasForeignKey(d => d.CustomerOrderId)
+                .HasConstraintName("FK__OrderedPr__Custo__625A9A57");
+        });
+
         modelBuilder.Entity<Product>(entity =>
         {
             entity.HasKey(e => e.ProductId).HasName("PK__Product__B40CC6EDAA02A3F5");
@@ -110,6 +168,9 @@ public partial class InventoryDbContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("ProductID");
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.Gstrate)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("GSTRate");
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.ProductImage)
                 .HasMaxLength(255)

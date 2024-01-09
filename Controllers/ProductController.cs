@@ -30,7 +30,7 @@ namespace InventoryRepo.Controllers
         public async Task<IActionResult> Add(Product product,IFormFile file)
         {
             var category = await categoryRepo.GetAsync(product.CategoryId);
-            var products = new Product
+            var newProducts = new Product
             {
                 ProductName = product.ProductName,
                 ProductId = product.ProductId,
@@ -42,8 +42,15 @@ namespace InventoryRepo.Controllers
 
             };
            
-            await ProductRepo.AddAsync(product,file);
+            await ProductRepo.AddAsync(newProducts, file);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetProducts()
+        {
+            var products = await ProductRepo.GetAllAsync();
+            return Json(products);
         }
 
 

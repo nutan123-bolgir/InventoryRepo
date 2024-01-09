@@ -20,9 +20,12 @@ public partial class Product
 
     public string? ProductImage { get; set; }
 
-    [NotMapped]
-    public IFormFile? file { get; set; } 
+    public decimal? Gstrate { get; set; }
+
     public virtual Category Category { get; set; }
+
+    [NotMapped]
+    public IFormFile file { get; set; }
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
